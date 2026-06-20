@@ -55,86 +55,91 @@ class _ResultScreenState extends State<ResultScreen> {
 
     return Scaffold(
       appBar: AppBar(title: const Text('Résultat')),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            // Image de la carte.
-            if (card.imageUrl.isNotEmpty)
-              ClipRRect(
-                borderRadius: BorderRadius.circular(12),
-                child: Image.network(
-                  card.imageUrl,
-                  height: 320,
-                  fit: BoxFit.contain,
-                  loadingBuilder: (context, child, progress) {
-                    if (progress == null) return child;
-                    return const SizedBox(
-                      height: 320,
-                      child: Center(child: CircularProgressIndicator()),
-                    );
-                  },
-                  errorBuilder: (_, __, ___) => const SizedBox(
+      // SafeArea : évite que la barre de navigation système ne recouvre les
+      // boutons du bas (« Scanner une autre carte »).
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              // Image de la carte.
+              if (card.imageUrl.isNotEmpty)
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: Image.network(
+                    card.imageUrl,
                     height: 320,
-                    child: Center(child: Icon(Icons.broken_image, size: 64)),
+                    fit: BoxFit.contain,
+                    loadingBuilder: (context, child, progress) {
+                      if (progress == null) return child;
+                      return const SizedBox(
+                        height: 320,
+                        child: Center(child: CircularProgressIndicator()),
+                      );
+                    },
+                    errorBuilder: (_, __, ___) => const SizedBox(
+                      height: 320,
+                      child: Center(child: Icon(Icons.broken_image, size: 64)),
+                    ),
                   ),
                 ),
-              ),
-            const SizedBox(height: 16),
+              const SizedBox(height: 16),
 
-            // Nom anglais (tel que l'API) + nom français déduit.
-            Text(card.name, style: Theme.of(context).textTheme.headlineSmall),
-            if (frenchName != null &&
-                frenchName.toLowerCase() != card.name.toLowerCase()) ...[
-              const SizedBox(height: 2),
+              // Nom anglais (tel que l'API) + nom français déduit.
+              Text(card.name, style: Theme.of(context).textTheme.headlineSmall),
+              if (frenchName != null &&
+                  frenchName.toLowerCase() != card.name.toLowerCase()) ...[
+                const SizedBox(height: 2),
+                Text(
+                  '🇫🇷 $frenchName',
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+              ],
+              const SizedBox(height: 4),
               Text(
-                '🇫🇷 $frenchName',
-                style: Theme.of(context).textTheme.titleMedium,
+                card.number.isNotEmpty
+                    ? '${card.setName} · n°${card.number}'
+                    : card.setName,
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      color: Colors.grey[600],
+                    ),
+              ),
+              const SizedBox(height: 16),
+
+              // Tableau des prix.
+              PriceCard(
+                low: card.priceLow,
+                mid: card.priceMid,
+                high: card.priceHigh,
+                currency: card.currency,
+              ),
+              const SizedBox(height: 16),
+
+              // Lien Cardmarket.
+              OutlinedButton.icon(
+                onPressed: _openCardmarket,
+                icon: const Icon(Icons.open_in_new),
+                label: const Text('Voir sur Cardmarket'),
+              ),
+              const SizedBox(height: 24),
+
+              // Bouton sauvegarder.
+              FilledButton.icon(
+                onPressed: _saved ? null : _save,
+                icon: Icon(_saved ? Icons.check : Icons.bookmark_add_outlined),
+                label: Text(_saved ? 'Sauvegardée' : 'Sauvegarder'),
+              ),
+              const SizedBox(height: 12),
+
+              // Bouton scanner une autre carte (retour à l'écran de scan).
+              OutlinedButton.icon(
+                onPressed: () => Navigator.of(context).pop(),
+                icon: const Icon(Icons.camera_alt_outlined),
+                label: const Text('Scanner une autre carte'),
               ),
             ],
-            const SizedBox(height: 4),
-            Text(
-              card.number.isNotEmpty
-                  ? '${card.setName} · n°${card.number}'
-                  : card.setName,
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: Colors.grey[600],
-                  ),
-            ),
-            const SizedBox(height: 16),
-
-            // Tableau des prix.
-            PriceCard(
-              low: card.priceLow,
-              mid: card.priceMid,
-              high: card.priceHigh,
-            ),
-            const SizedBox(height: 16),
-
-            // Lien Cardmarket.
-            OutlinedButton.icon(
-              onPressed: _openCardmarket,
-              icon: const Icon(Icons.open_in_new),
-              label: const Text('Voir sur Cardmarket'),
-            ),
-            const SizedBox(height: 24),
-
-            // Bouton sauvegarder.
-            FilledButton.icon(
-              onPressed: _saved ? null : _save,
-              icon: Icon(_saved ? Icons.check : Icons.bookmark_add_outlined),
-              label: Text(_saved ? 'Sauvegardée' : 'Sauvegarder'),
-            ),
-            const SizedBox(height: 12),
-
-            // Bouton scanner une autre carte (retour à l'écran de scan).
-            OutlinedButton.icon(
-              onPressed: () => Navigator.of(context).pop(),
-              icon: const Icon(Icons.camera_alt_outlined),
-              label: const Text('Scanner une autre carte'),
-            ),
-          ],
+          ),
         ),
       ),
     );

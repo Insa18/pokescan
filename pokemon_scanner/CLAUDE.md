@@ -12,7 +12,8 @@ Application Flutter de scan de cartes Pokémon.
 - `google_mlkit_text_recognition` pour l'OCR (local, gratuit)
 - `http` pour les appels API
 - `hive` / `hive_flutter` pour le stockage local (historique + cache)
-- API : https://api.pokemontcg.io/v2 (gratuite, 1000 req/jour sans clé)
+- API primaire : https://api.tcgdex.net/v2/fr (cartes FR natives + prix Cardmarket €, gratuite, sans clé)
+- API repli : https://api.pokemontcg.io/v2 (anglais, prix $, 1000 req/jour sans clé)
 
 ## Architecture (lib/)
 - `main.dart` — init Hive + caméras, lance ScanScreen

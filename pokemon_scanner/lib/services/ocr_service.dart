@@ -68,7 +68,8 @@ class OcrService {
   }
 
   /// Numéro de collection : motif « xxx/yyy » (ou « TG12/TG30 »), de
-  /// préférence dans le bas de la carte. Retourne le numérateur (« 146 »).
+  /// préférence dans le bas de la carte. Retourne « 146/131 » (numérateur +
+  /// dénominateur) pour permettre de cibler le bon set.
   String? _extractNumber(List<TextLine> lines) {
     final maxBottom = lines
         .map((l) => l.boundingBox.bottom)
@@ -88,11 +89,14 @@ class OcrService {
       if (m == null) continue;
       final numerator = _normalizeNumber(m.group(1)!);
       if (numerator.isEmpty) continue;
+      // Le dénominateur (taille du set) aide à départager les rééditions.
+      final denominator = _normalizeNumber(m.group(2)!);
+      final value = denominator.isEmpty ? numerator : '$numerator/$denominator';
       // On garde le match le plus bas (le numéro est en bas de carte).
       final top = l.boundingBox.top;
       final inBottom = top >= bottomZone;
       if (best == null || (inBottom && top > bestTop)) {
-        best = numerator;
+        best = value;
         bestTop = top;
       }
     }
@@ -101,9 +105,8 @@ class OcrService {
 
   /// Normalise un numéro OCR : corrige O→0, l/I→1 et garde lettres+chiffres.
   String _normalizeNumber(String raw) {
-    final fixed = raw
-        .replaceAll(RegExp(r'[Oo]'), '0')
-        .replaceAll(RegExp(r'[lI]'), '1');
+    final fixed =
+        raw.replaceAll(RegExp(r'[Oo]'), '0').replaceAll(RegExp(r'[lI]'), '1');
     // Garde le préfixe alphabétique éventuel (TG, SV…) + les chiffres.
     final m = RegExp(r'^([A-Za-z]{0,3})(\d{1,4})$').firstMatch(fixed);
     if (m == null) return RegExp(r'\d{1,4}').stringMatch(fixed) ?? '';

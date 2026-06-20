@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../constants.dart';
 import '../models/pokemon_card.dart';
 import '../services/history_service.dart';
 import 'result_screen.dart';
@@ -98,10 +97,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                     title: Text(card.name),
                     subtitle: Text(card.setName),
                     trailing: Text(
-                      card.priceMid != null
-                          ? '\$${card.priceMid!.toStringAsFixed(2)}\n'
-                              '${(card.priceMid! * kUsdToEurRate).toStringAsFixed(2)} €'
-                          : '—',
+                      card.formatPrice(card.priceMid),
                       textAlign: TextAlign.right,
                       style: const TextStyle(fontSize: 12),
                     ),

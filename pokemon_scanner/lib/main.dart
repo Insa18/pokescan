@@ -1,5 +1,6 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import 'constants.dart';
@@ -12,6 +13,13 @@ List<CameraDescription> _cameras = [];
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // On masque la barre de navigation système en bas (on garde la barre
+  // d'état en haut). Elle réapparaît par un balayage depuis le bord.
+  SystemChrome.setEnabledSystemUIMode(
+    SystemUiMode.manual,
+    overlays: [SystemUiOverlay.top],
+  );
 
   // Initialisation du stockage local (historique + cache hors-ligne).
   await Hive.initFlutter();
