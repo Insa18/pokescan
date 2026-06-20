@@ -5,7 +5,7 @@
 Application **Flutter** (Android) qui prend une photo d'une carte, lit le nom et le numéro par **OCR local** (Google ML Kit), traduit le nom français en anglais, interroge l'**API Pokémon TCG** et affiche les prix en **€ et $**.
 
 <p align="center">
-  <img src="docs/screenshots/result.png" alt="Écran résultat PokéScan" width="300">
+  <img src="docs/screenshots/result.jpg" alt="Écran résultat PokéScan" width="300">
 </p>
 
 ---
