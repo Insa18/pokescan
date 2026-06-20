@@ -26,7 +26,7 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
   CameraController? _controller;
   Future<void>? _initFuture;
 
-  final OcrService _ocr = OcrService();
+  final OcrService _ocr = createOcrService();
   final PokemonApiService _api = PokemonApiService();
 
   bool _busy = false;
@@ -136,7 +136,7 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
         _status = 'Lecture du texte (OCR)…';
       });
 
-      final result = await _ocr.extractCard(photo.path);
+      final result = await _ocr.extract(photo);
       if (_aborted(gen)) return;
       final name = result.name;
       if (name == null || name.isEmpty) {

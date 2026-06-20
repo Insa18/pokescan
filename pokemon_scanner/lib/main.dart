@@ -1,15 +1,11 @@
-import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
+import 'app_home.dart';
 import 'constants.dart';
-import 'screens/scan_screen.dart';
 import 'services/name_translator.dart';
 import 'theme.dart';
-
-/// Liste des caméras disponibles, détectée au démarrage.
-List<CameraDescription> _cameras = [];
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,12 +25,8 @@ Future<void> main() async {
   // Dictionnaire FR→EN pour traduire les noms de cartes avant la recherche.
   await NameTranslator.instance.load();
 
-  // Détection des caméras (peut échouer sur émulateur sans caméra).
-  try {
-    _cameras = await availableCameras();
-  } catch (_) {
-    _cameras = [];
-  }
+  // Initialisation spécifique à la plateforme (caméras sur mobile, rien sur web).
+  await initPlatform();
 
   runApp(const PokemonScannerApp());
 }
@@ -102,7 +94,7 @@ class PokemonScannerApp extends StatelessWidget {
           contentTextStyle: TextStyle(color: Colors.white),
         ),
       ),
-      home: ScanScreen(cameras: _cameras),
+      home: buildHome(),
     );
   }
 }

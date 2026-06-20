@@ -27,9 +27,9 @@ Application **Flutter** (Android) qui prend une photo d'une carte, lit le nom et
 
 | Rôle | Techno |
 |---|---|
-| Framework | Flutter 3.x / Dart |
-| Caméra | `camera` |
-| OCR | `google_mlkit_text_recognition` (local, gratuit) |
+| Framework | Flutter 3.x / Dart (Android + Web) |
+| Caméra | `camera` (mobile) · `image_picker` (web) |
+| OCR | `google_mlkit_text_recognition` (mobile) · **Tesseract.js** (web, sans clé) |
 | Réseau | `http` → [TCGdex](https://tcgdex.dev) (FR + prix €) · repli [API Pokémon TCG](https://pokemontcg.io) |
 | Stockage | `hive` / `hive_flutter` (historique + cache) |
 | Liens externes | `url_launcher` (Cardmarket) |
@@ -50,19 +50,43 @@ flutter build apk --release
 # → build/app/outputs/flutter-apk/app-release.apk
 ```
 
+## 🌐 Version web (iOS & navigateurs)
+
+Pour permettre l'usage sur **iPhone** sans Mac/compte Apple, l'app a aussi une
+cible **web** :
+
+```bash
+cd pokemon_scanner
+flutter build web --release      # → build/web (à héberger : GitHub Pages, Netlify…)
+flutter run -d chrome            # test local
+```
+
+Différences avec le mobile :
+- 📸 La capture passe par l'appareil photo du navigateur (`image_picker`), ce qui
+  marche **sur iOS Safari**.
+- 🔤 L'OCR utilise **Tesseract.js** (WASM, gratuit, sans clé, 100 % local) car
+  ML Kit n'existe pas en navigateur. Précision moindre que sur mobile → la
+  **recherche manuelle (nom + numéro)** reste le repli fiable.
+- Le choix mobile/web se fait par **compilation conditionnelle** (`lib/app_home.dart`,
+  `lib/services/ocr_service.dart`) ; aucun code natif n'est inclus dans le build web.
+
 ## 🗂️ Architecture (`pokemon_scanner/lib/`)
 
 ```
-main.dart                  # init Hive + caméras + thème Pokémon
+main.dart                  # init Hive + thème Pokémon
+app_home.dart              # choix accueil mobile/web (compilation conditionnelle)
 theme.dart                 # palette PokeColors
 models/pokemon_card.dart   # modèle + prix + lien Cardmarket
 services/
-  ocr_service.dart         # extraction nom + numéro (ML Kit)
+  ocr_service.dart         # dispatcher OCR mobile/web
+  ocr_heuristics.dart      # heuristiques nom/numéro (partagées)
+  ocr_service_mobile.dart  # OCR ML Kit (mobile)
+  ocr_service_web.dart     # OCR Tesseract.js (web)
   name_translator.dart     # traduction FR↔EN (pour le repli + le lien CM)
   pokemon_api.dart         # TCGdex (primaire) + repli pokemontcg.io, cache
-  history_service.dart     # historique Hive
-screens/                   # scan, result, history
-widgets/                   # price_card, pokeball_icon
+  history_service.dart     # stockage Hive du Pokédex
+screens/                   # scan (mobile), web_home (web), result, pokedex
+widgets/                   # price_card, pokeball_icon, pokedex_icon
 assets/fr_en_pokemon.json  # 1025 noms FR→EN (repli pokemontcg + lien Cardmarket)
 ```
 

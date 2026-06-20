@@ -10,8 +10,14 @@ dependencies:
   flutter:
     sdk: flutter
 
-  # Caméra (aperçu live + capture photo)
+  # Caméra (aperçu live + capture photo) — mobile
   camera: ^0.11.0
+
+  # Sélection / capture photo — utilisé pour la version web (iOS Safari)
+  image_picker: ^1.1.2
+
+  # Type XFile commun (capture mobile + web)
+  cross_file: ^0.3.4
 
   # OCR — Google ML Kit, gratuit et local sur le téléphone
   google_mlkit_text_recognition: ^0.13.0

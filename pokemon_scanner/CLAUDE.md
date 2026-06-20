@@ -3,7 +3,10 @@
 ## Contexte du projet
 Application Flutter de scan de cartes Pokémon.
 - Scan via caméra → OCR → identification → affichage du prix
-- Cible : Android (iOS abandonné : nécessite un Mac + compte Apple Developer)
+- Cible : Android + Web (iOS abandonné : nécessite un Mac + compte Apple Developer ;
+  les utilisateurs iPhone passent par la version web)
+- Web : OCR via Tesseract.js (ML Kit indispo en navigateur), capture via image_picker.
+  Choix mobile/web par compilation conditionnelle (app_home.dart, ocr_service.dart).
 - Tout doit rester gratuit (pas de clé API payante)
 
 ## Stack technique
