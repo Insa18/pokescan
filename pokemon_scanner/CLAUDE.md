@@ -3,7 +3,7 @@
 ## Contexte du projet
 Application Flutter de scan de cartes Pokémon.
 - Scan via caméra → OCR → identification → affichage du prix
-- Cible : Android et iOS
+- Cible : Android (iOS abandonné : nécessite un Mac + compte Apple Developer)
 - Tout doit rester gratuit (pas de clé API payante)
 
 ## Stack technique
@@ -43,7 +43,7 @@ Application Flutter de scan de cartes Pokémon.
 ## Ce qu'il ne faut pas faire
 - Ne jamais hardcoder de clé API
 - Ne pas utiliser de packages payants
-- Ne pas oublier les permissions caméra (AndroidManifest + Info.plist)
+- Ne pas oublier les permissions caméra (AndroidManifest)
 
 ## Commandes utiles
 - `flutter pub get` — installe les dépendances

@@ -50,10 +50,6 @@ flutter build apk --release
 # → build/app/outputs/flutter-apk/app-release.apk
 ```
 
-## 🍎 iOS
-
-Le code est prêt (permissions caméra incluses dans `ios/Runner/`), mais compiler/distribuer pour iPhone nécessite un **Mac (ou un build cloud type Codemagic)** et un **compte Apple Developer** pour passer par TestFlight.
-
 ## 🗂️ Architecture (`pokemon_scanner/lib/`)
 
 ```
