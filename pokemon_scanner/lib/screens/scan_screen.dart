@@ -8,7 +8,7 @@ import '../services/ocr_service.dart';
 import '../services/pokemon_api.dart';
 import '../theme.dart';
 import '../widgets/pokeball_icon.dart';
-import 'history_screen.dart';
+import 'pokedex_screen.dart';
 import 'result_screen.dart';
 
 /// Écran principal : aperçu caméra, capture, OCR puis recherche API.
@@ -293,10 +293,10 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.history),
-            tooltip: 'Historique',
+            icon: const Icon(Icons.catching_pokemon),
+            tooltip: 'Pokédex',
             onPressed: () => Navigator.of(context).push(
-              MaterialPageRoute(builder: (_) => const HistoryScreen()),
+              MaterialPageRoute(builder: (_) => const PokedexScreen()),
             ),
           ),
           IconButton(

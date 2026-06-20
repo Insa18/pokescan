@@ -41,6 +41,14 @@ class PokemonCard {
     return 'https://www.cardmarket.com/en/Pokemon/Products/Search?searchString=$q';
   }
 
+  /// Valeur indicative de la carte en euros (prix moyen, sinon haut/bas),
+  /// pour calculer la valeur totale d'une collection. `null` si aucun prix.
+  double? get valueEur {
+    final v = priceMid ?? priceHigh ?? priceLow;
+    if (v == null) return null;
+    return currency == 'EUR' ? v : v * kUsdToEurRate;
+  }
+
   /// Formate un prix selon la devise de la carte.
   /// EUR (Cardmarket) : « 5.13 € ». USD (pokemontcg) : « $6.85 • 6.30 € ».
   String formatPrice(double? value) {

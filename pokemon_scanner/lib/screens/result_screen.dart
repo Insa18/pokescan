@@ -26,7 +26,7 @@ class _ResultScreenState extends State<ResultScreen> {
       if (!mounted) return;
       setState(() => _saved = true);
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Carte sauvegardée dans l\'historique.')),
+        const SnackBar(content: Text('Carte ajoutée à ton Pokédex.')),
       );
     } catch (_) {
       if (!mounted) return;
@@ -128,7 +128,8 @@ class _ResultScreenState extends State<ResultScreen> {
               FilledButton.icon(
                 onPressed: _saved ? null : _save,
                 icon: Icon(_saved ? Icons.check : Icons.bookmark_add_outlined),
-                label: Text(_saved ? 'Sauvegardée' : 'Sauvegarder'),
+                label:
+                    Text(_saved ? 'Ajoutée au Pokédex' : 'Ajouter au Pokédex'),
               ),
               const SizedBox(height: 12),
 
