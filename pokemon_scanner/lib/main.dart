@@ -1,0 +1,100 @@
+import 'package:camera/camera.dart';
+import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+
+import 'constants.dart';
+import 'screens/scan_screen.dart';
+import 'services/name_translator.dart';
+import 'theme.dart';
+
+/// Liste des caméras disponibles, détectée au démarrage.
+List<CameraDescription> _cameras = [];
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialisation du stockage local (historique + cache hors-ligne).
+  await Hive.initFlutter();
+  await Hive.openBox(kHistoryBoxName);
+  await Hive.openBox(kCardCacheBoxName);
+
+  // Dictionnaire FR→EN pour traduire les noms de cartes avant la recherche.
+  await NameTranslator.instance.load();
+
+  // Détection des caméras (peut échouer sur émulateur sans caméra).
+  try {
+    _cameras = await availableCameras();
+  } catch (_) {
+    _cameras = [];
+  }
+
+  runApp(const PokemonScannerApp());
+}
+
+class PokemonScannerApp extends StatelessWidget {
+  const PokemonScannerApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = ColorScheme.fromSeed(
+      seedColor: PokeColors.red,
+      primary: PokeColors.red,
+      onPrimary: Colors.white,
+      secondary: PokeColors.yellow,
+      onSecondary: PokeColors.ink,
+      brightness: Brightness.light,
+    );
+
+    return MaterialApp(
+      title: 'PokéScan',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        useMaterial3: true,
+        colorScheme: scheme,
+        scaffoldBackgroundColor: PokeColors.cream,
+        appBarTheme: const AppBarTheme(
+          backgroundColor: PokeColors.red,
+          foregroundColor: Colors.white,
+          centerTitle: true,
+          elevation: 3,
+          titleTextStyle: TextStyle(
+            fontSize: 22,
+            fontWeight: FontWeight.w900,
+            color: Colors.white,
+            letterSpacing: 1,
+          ),
+        ),
+        floatingActionButtonTheme: const FloatingActionButtonThemeData(
+          backgroundColor: PokeColors.yellow,
+          foregroundColor: PokeColors.ink,
+        ),
+        filledButtonTheme: FilledButtonThemeData(
+          style: FilledButton.styleFrom(
+            backgroundColor: PokeColors.red,
+            foregroundColor: Colors.white,
+            textStyle: const TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ),
+        outlinedButtonTheme: OutlinedButtonThemeData(
+          style: OutlinedButton.styleFrom(
+            foregroundColor: PokeColors.blue,
+            side: const BorderSide(color: PokeColors.blue, width: 1.5),
+            textStyle: const TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ),
+        cardTheme: CardThemeData(
+          elevation: 3,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+            side: BorderSide(color: PokeColors.yellow.withValues(alpha: 0.6)),
+          ),
+        ),
+        snackBarTheme: const SnackBarThemeData(
+          backgroundColor: PokeColors.ink,
+          contentTextStyle: TextStyle(color: Colors.white),
+        ),
+      ),
+      home: ScanScreen(cameras: _cameras),
+    );
+  }
+}

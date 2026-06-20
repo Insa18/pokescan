@@ -1,0 +1,43 @@
+name: pokemon_scanner
+description: "Application Flutter de scan de cartes Pokémon (caméra → OCR → prix)."
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.3.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # Caméra (aperçu live + capture photo)
+  camera: ^0.11.0
+
+  # OCR — Google ML Kit, gratuit et local sur le téléphone
+  google_mlkit_text_recognition: ^0.13.0
+
+  # Appels réseau vers l'API Pokémon TCG
+  http: ^1.2.0
+
+  # Ouverture de liens externes (Cardmarket)
+  url_launcher: ^6.3.0
+
+  # Stockage local (historique + cache hors-ligne)
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
+  path_provider: ^2.1.0
+
+  cupertino_icons: ^1.0.6
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true
+
+  # Dictionnaire français → anglais des noms de Pokémon (l'API n'utilise que
+  # les noms anglais ; les cartes FR sont donc traduites avant la recherche).
+  assets:
+    - assets/fr_en_pokemon.json
