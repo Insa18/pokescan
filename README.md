@@ -76,5 +76,3 @@ assets/fr_en_pokemon.json  # 1025 noms FR→EN (généré depuis PokéAPI)
 - Hive est utilisé **sans codegen** (sérialisation JSON) → aucune commande `build_runner` nécessaire.
 
 ---
-
-*Construit avec Flutter et Claude Code.*
