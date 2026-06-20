@@ -4,6 +4,7 @@ import '../models/pokemon_card.dart';
 import '../services/history_service.dart';
 import '../theme.dart';
 import '../widgets/pokeball_icon.dart';
+import '../widgets/pokedex_icon.dart';
 import 'result_screen.dart';
 
 /// Pokédex : collection des cartes scannées et enregistrées.
@@ -243,7 +244,7 @@ class _EmptyState extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const PokeballIcon(size: 72),
+          const PokedexIcon(size: 72, color: PokeColors.red),
           const SizedBox(height: 12),
           Text('Ton Pokédex est vide',
               style: Theme.of(context).textTheme.titleMedium),

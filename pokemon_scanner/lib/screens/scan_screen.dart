@@ -8,6 +8,7 @@ import '../services/ocr_service.dart';
 import '../services/pokemon_api.dart';
 import '../theme.dart';
 import '../widgets/pokeball_icon.dart';
+import '../widgets/pokedex_icon.dart';
 import 'pokedex_screen.dart';
 import 'result_screen.dart';
 
@@ -293,7 +294,7 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
         ),
         actions: [
           IconButton(
-            icon: const PokeballIcon(size: 24),
+            icon: const PokedexIcon(size: 24),
             tooltip: 'Pokédex',
             onPressed: () => Navigator.of(context).push(
               MaterialPageRoute(builder: (_) => const PokedexScreen()),
