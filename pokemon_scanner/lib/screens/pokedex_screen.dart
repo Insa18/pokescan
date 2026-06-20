@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../models/pokemon_card.dart';
 import '../services/history_service.dart';
 import '../theme.dart';
+import '../widgets/pokeball_icon.dart';
 import 'result_screen.dart';
 
 /// Pokédex : collection des cartes scannées et enregistrées.
@@ -227,9 +228,7 @@ class _ImageFallback extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: PokeColors.cream,
-      child: const Center(
-        child: Icon(Icons.catching_pokemon, size: 40, color: PokeColors.red),
-      ),
+      child: const Center(child: PokeballIcon(size: 36)),
     );
   }
 }
@@ -244,7 +243,7 @@ class _EmptyState extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Icon(Icons.catching_pokemon, size: 72, color: PokeColors.red),
+          const PokeballIcon(size: 72),
           const SizedBox(height: 12),
           Text('Ton Pokédex est vide',
               style: Theme.of(context).textTheme.titleMedium),

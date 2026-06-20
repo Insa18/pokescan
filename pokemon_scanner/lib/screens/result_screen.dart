@@ -20,6 +20,13 @@ class _ResultScreenState extends State<ResultScreen> {
   final HistoryService _history = HistoryService();
   bool _saved = false;
 
+  @override
+  void initState() {
+    super.initState();
+    // Si la carte est déjà dans le Pokédex, on n'en propose pas le ré-ajout.
+    _saved = _history.contains(widget.card);
+  }
+
   Future<void> _save() async {
     try {
       await _history.save(widget.card);
@@ -128,8 +135,8 @@ class _ResultScreenState extends State<ResultScreen> {
               FilledButton.icon(
                 onPressed: _saved ? null : _save,
                 icon: Icon(_saved ? Icons.check : Icons.bookmark_add_outlined),
-                label:
-                    Text(_saved ? 'Ajoutée au Pokédex' : 'Ajouter au Pokédex'),
+                label: Text(
+                    _saved ? 'Déjà dans le Pokédex' : 'Ajouter au Pokédex'),
               ),
               const SizedBox(height: 12),
 

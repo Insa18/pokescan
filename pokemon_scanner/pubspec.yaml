@@ -34,6 +34,18 @@ dev_dependencies:
     sdk: flutter
   flutter_lints: ^4.0.0
 
+  # Génération des icônes de lancement (Pokéball) Android + iOS
+  flutter_launcher_icons: ^0.14.1
+
+# Configuration de l'icône de l'application (Pokéball rouge/blanc sur jaune).
+flutter_launcher_icons:
+  android: true
+  ios: true
+  remove_alpha_ios: true
+  image_path: "assets/icon/icon.png"
+  adaptive_icon_background: "#FFCB05"
+  adaptive_icon_foreground: "assets/icon/icon_foreground.png"
+
 flutter:
   uses-material-design: true
 

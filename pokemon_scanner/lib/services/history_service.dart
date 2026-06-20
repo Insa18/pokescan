@@ -12,11 +12,17 @@ import '../models/pokemon_card.dart';
 class HistoryService {
   Box get _box => Hive.box(kHistoryBoxName);
 
+  /// Clé de stockage d'une carte (id si dispo, sinon nom) → évite les doublons.
+  String _keyOf(PokemonCard card) =>
+      card.id.isNotEmpty ? card.id : card.name.toLowerCase();
+
   /// Sauvegarde (ou met à jour) une carte dans l'historique.
   Future<void> save(PokemonCard card) async {
-    final key = card.id.isNotEmpty ? card.id : card.name.toLowerCase();
-    await _box.put(key, jsonEncode(card.toJson()));
+    await _box.put(_keyOf(card), jsonEncode(card.toJson()));
   }
+
+  /// Indique si la carte est déjà enregistrée.
+  bool contains(PokemonCard card) => _box.containsKey(_keyOf(card));
 
   /// Retourne toutes les cartes de l'historique (plus récentes en premier).
   List<PokemonCard> getAll() {
@@ -36,8 +42,7 @@ class HistoryService {
 
   /// Supprime une carte de l'historique.
   Future<void> delete(PokemonCard card) async {
-    final key = card.id.isNotEmpty ? card.id : card.name.toLowerCase();
-    await _box.delete(key);
+    await _box.delete(_keyOf(card));
   }
 
   /// Vide tout l'historique.

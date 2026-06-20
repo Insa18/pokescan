@@ -293,7 +293,7 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.catching_pokemon),
+            icon: const PokeballIcon(size: 24),
             tooltip: 'Pokédex',
             onPressed: () => Navigator.of(context).push(
               MaterialPageRoute(builder: (_) => const PokedexScreen()),
